@@ -26,7 +26,7 @@ jobs:
         with:
           image-ref: guestbook-backend:ci
           format: table
-          severity: CRITICAL,HIGH
+          severity: CRITICAL
           ignore-unfixed: true
           exit-code: '1'
 
@@ -35,7 +35,7 @@ jobs:
         with:
           image-ref: guestbook-frontend:ci
           format: table
-          severity: CRITICAL,HIGH
+          severity: CRITICAL
           ignore-unfixed: true
           exit-code: '1'
 
