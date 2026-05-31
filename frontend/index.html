@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guestbook</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        h1 { color: #2c3e50; }
+        form { margin-bottom: 30px; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
+        button { background: #3498db; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        .entry { border-bottom: 1px solid #ddd; padding: 10px 0; }
+        .entry strong { color: #2c3e50; }
+        .entry small { color: #888; }
+    </style>
+</head>
+<body>
+    <h1>📒 Guestbook</h1>
+
+    <form onsubmit="addEntry(event)">
+        <input id="name" placeholder="Your name" required>
+        <textarea id="message" placeholder="Your message" required></textarea>
+        <button type="submit">Sign the guestbook</button>
+    </form>
+
+    <h2>Entries</h2>
+    <div id="entries"></div>
+
+    <script>
+    async function loadEntries() {
+        const res = await fetch('/api/entries');
+        const entries = await res.json();
+        document.getElementById('entries').innerHTML = entries.map(e => `
+            <div class="entry">
+                <strong>${e.name}</strong><br>
+                ${e.message}<br>
+                <small>${new Date(e.created_at).toLocaleString()}</small>
+            </div>
+        `).join('');
+    }
+    async function addEntry(e) {
+        e.preventDefault();
+        await fetch('/api/entries', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                name: document.getElementById('name').value,
+                message: document.getElementById('message').value
+            })
+        });
+        document.getElementById('name').value = '';
+        document.getElementById('message').value = '';
+        loadEntries();
+    }
+    loadEntries();
+    </script>
+</body>
+</html>
