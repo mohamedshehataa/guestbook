@@ -7,6 +7,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
+    networks: [backend_net]
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -42,7 +43,7 @@ services:
         limits:
           cpus: '0.5'
           memory: 256M
-
+    networks: [frontend_net, backend_net]
   frontend:
     build: ./frontend
     ports:
@@ -68,5 +69,11 @@ services:
         limits:
           cpus: '0.25'
           memory: 64M
+    networks: [frontend_net]
+
+networks:
+  frontend_net:
+  backend_net:
+
 volumes:
   db_data:
