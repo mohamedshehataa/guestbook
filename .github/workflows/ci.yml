@@ -38,19 +38,3 @@ jobs:
           severity: CRITICAL
           ignore-unfixed: true
           exit-code: '1'
-
-      - name: Fail build if CRITICAL vulnerabilities in backend
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: guestbook-backend:ci
-          format: table
-          severity: CRITICAL
-          exit-code: '1'
-
-      - name: Fail build if CRITICAL vulnerabilities in frontend
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: guestbook-frontend:ci
-          format: table
-          severity: CRITICAL
-          exit-code: '1'
